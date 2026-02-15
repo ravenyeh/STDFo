@@ -60,7 +60,6 @@ export function FileUploader({ onFileSelect, disabled }: Props) {
       <input
         ref={inputRef}
         type="file"
-        accept=".stdf,.std,.stdf.gz,.gz"
         onChange={handleFileChange}
         className="hidden"
       />
