@@ -1,4 +1,4 @@
-import { useCallback, useState, type DragEvent } from "react";
+import { useCallback, useRef, useState, type ChangeEvent, type DragEvent } from "react";
 
 interface Props {
   onFileSelect: (file: File) => void;
@@ -7,6 +7,7 @@ interface Props {
 
 export function FileUploader({ onFileSelect, disabled }: Props) {
   const [dragOver, setDragOver] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrop = useCallback(
     (e: DragEvent) => {
@@ -31,15 +32,17 @@ export function FileUploader({ onFileSelect, disabled }: Props) {
 
   const handleClick = useCallback(() => {
     if (disabled) return;
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".stdf,.std,.stdf.gz,.gz";
-    input.onchange = () => {
-      const file = input.files?.[0];
+    inputRef.current?.click();
+  }, [disabled]);
+
+  const handleFileChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
       if (file) onFileSelect(file);
-    };
-    input.click();
-  }, [onFileSelect, disabled]);
+      e.target.value = "";
+    },
+    [onFileSelect]
+  );
 
   return (
     <div
@@ -54,6 +57,13 @@ export function FileUploader({ onFileSelect, disabled }: Props) {
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
       `}
     >
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".stdf,.std,.stdf.gz,.gz"
+        onChange={handleFileChange}
+        className="hidden"
+      />
       <div className="text-4xl mb-4">
         {disabled ? (
           <div className="inline-block animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full" />
