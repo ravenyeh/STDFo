@@ -1,0 +1,15 @@
+{
+  "name": "stdf-wasm",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "stdf_wasm_bg.wasm",
+    "stdf_wasm.js",
+    "stdf_wasm.d.ts"
+  ],
+  "main": "stdf_wasm.js",
+  "types": "stdf_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
